@@ -7,4 +7,4 @@ class Conta:
     self.lock = threading.Lock()  # Lock para sincronização de acesso
 
   def __str__(self):
-    return f"Conta {self.id}: Saldo {self.saldo}"
+    return f"Conta {self.id}: Saldo R${self.saldo}"

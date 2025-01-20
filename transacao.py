@@ -8,7 +8,7 @@ class TransacaoBancaria:
   def transferir(self, contaOrigem, contaDestino, valor):
     """Realiza a transferência de uma conta para outra com controle de concorrência."""
     with self.semaforo:  # Limita a 3 transferências simultâneas
-      if not contaOrigem or not contaDestino or contaOrigem == contaDestino:
+      if not contaOrigem or not contaDestino:
         return
 
       # Ordena as contas para evitar deadlocks
@@ -25,9 +25,9 @@ class TransacaoBancaria:
           if contaOrigem.saldo >= valor:  # Verifica se há saldo suficiente
             contaOrigem.saldo -= valor
             contaDestino.saldo += valor
-            self.log.append(f"Transferência de {valor} da Conta {contaOrigem.id} para Conta {contaDestino.id}. Saldo final: {contaOrigem} | {contaDestino}")
+            self.log.append(f"Transferência de R${valor} da Conta {contaOrigem.id} para Conta {contaDestino.id}. Saldo final conta {contaOrigem.id}= R${contaOrigem.saldo} | Saldo final conta {contaDestino.id}= R${contaDestino.saldo}")
           else:
-            self.log.append(f"Falha na transferência de {valor} da Conta {contaOrigem.id} para Conta {contaDestino.id}: saldo insuficiente.")
+            self.log.append(f"Falha na transferência de R${valor} da Conta {contaOrigem.id} para Conta {contaDestino.id}: saldo insuficiente.")
     
   def printarLog(self):
     for registro in self.log:
