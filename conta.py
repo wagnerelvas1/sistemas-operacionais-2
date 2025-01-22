@@ -5,3 +5,4 @@ class Conta:
     self.id = id
     self.saldo = saldo
     self.lock = threading.Lock()
+    
