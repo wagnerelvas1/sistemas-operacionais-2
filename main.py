@@ -1,38 +1,33 @@
 from banco import *
 from transacao import *
 import random
-import time
 
 def simularTransacoes(banco, transacoes, numTransacoes):
   for _ in range(numTransacoes):
-    origem = random.choice(banco.contas)  # Escolhe uma conta de origem
-    destino = random.choice(banco.contas)  # Escolhe uma conta de destino
-    while (origem.id == destino.id):
-      destino = random.choice(banco.contas)
-    valor = random.randint(1, 100)  # Define um valor aleatório para transferência
-    transacoes.transferir(origem, destino, valor)  # Realiza a transferência
-    time.sleep(random.uniform(0.01, 0.1))  # Introduz um pequeno atraso para simular concorrência
+    origem = random.choice(banco.contas)                                 # Escolhe uma conta de origem aleatória do array de contas do banco
+    destino = random.choice(banco.contas)                                # Escolhe uma conta de destino aleatória do array de contas do banco
+    while (origem.id == destino.id):                                     # Caso a mesma conta seja selecionada como origem e destino...
+      destino = random.choice(banco.contas)                              # ... É selecionada uma nova conta de destino (até que contas diferentes sejam selecionadas)
+    valor = random.randint(1, 150)                                       # Define um valor aleatório para transferência
+    transacoes.transferir(origem, destino, valor)                        # Realiza a transferência
 
-# Configuração inicial
-numContas = int(input('Insira o número de contas a serem criadas: '))  # Número de contas
-numThreads = int(input('Insira o número de threads concorrentes: '))  # Número de threads concorrentes
+numContas = int(input('Insira o número de contas a serem criadas: '))    # Número de contas
+numThreads = int(input('Insira o número de threads concorrentes: '))     # Número de threads concorrentes
 numTransacoesThread = int(input('Insira o número de transações bancárias por thread: '))  # Número de transações por thread
 
-banco = Banco()
-transacoes = TransacaoBancaria()
+banco = Banco()                                                          # Salva na variável banco a instância da classe Banco
+transacoes = TransacaoBancaria()                                         # Salva na variável transacoes a instância da classe TransacaoBancaria
 
-for x in range(1, numContas + 1):
-  banco.criarConta(x, random.randint(100, 500))  # Cria contas com saldo aleatório
+for x in range(1, numContas + 1):                                        # Realiza um loop entre um e o número de contas especificado pelo usuário
+  banco.criarConta(x, random.randint(100, 1050))                         # Cria contas com saldo aleatório (entre 100 e 1050)
 
-# Execução concorrente
 threads = []
-for _ in range(numThreads):
-  thread = threading.Thread(target=simularTransacoes, args=(banco, transacoes, numTransacoesThread))
-  threads.append(thread)
-  thread.start()
+for _ in range(numThreads):                                              # Realiza um loop para o número de threads especificado pelo usuário
+  thread = threading.Thread(target=simularTransacoes, args=(banco, transacoes, numTransacoesThread))  # Cria cada thread para executar a funcao simularTransacoes
+  threads.append(thread)                                                 # Adiciona ao array de threads cada thread criada
+  thread.start()                                                         # Inicia a execução de cada thread
 
 for thread in threads:
-  thread.join()  # Aguarda todas as threads terminarem
+  thread.join()                                                          # Finaliza a execução de cada thread
 
-# Exibição dos logs das transações realizadas
-transacoes.printarLog()
+transacoes.printarLog()                                                  # Exibe o log final
