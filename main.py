@@ -1,3 +1,9 @@
+# Trabalho desenvolvido por:
+# - Ana Clara Souza Gibson
+# - Barbara Campos Mercez
+# - Robert Barreto Vieira
+# - Wagner José Nascimento Relvas
+
 from banco import *
 from transacao import *
 import random
